@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/08 17:58:46 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/08 18:08:24 by niperez          ###   ########.fr       */
+/*   Created: 2025/06/12 15:41:47 by niperez           #+#    #+#             */
+/*   Updated: 2025/06/23 17:12:42 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	free_split(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		free(s[i]);
-		i++;
-	}
-	free(s);
-}
 
 double	ft_atod(const char *str)
 {
@@ -47,8 +34,50 @@ double	ft_atod(const char *str)
 	aux = 10;
 	while (str[++i] >= '0' && str[i] <= '9')
 	{
-		nb = nb + (double)(str[i] - '0') / aux;
-		aux = aux * 10;
+		nb += (double)(str[i] - '0') / aux;
+		aux *= 10;
 	}
 	return ((double)nb * signe);
+}
+
+void	free_split(char **s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		free(s[i]);
+		i++;
+	}
+	free(s);
+}
+
+void	free_scene(t_scene *sc)
+{
+	t_objs	*tmp;
+
+	while (sc->objs)
+	{
+		tmp = sc->objs;
+		sc->objs = sc->objs->next;
+		free(tmp);
+	}
+}
+
+void	ft_err(t_scene *sc, char **tokens, int fd, char *err)
+{
+	char	*line;
+
+	printf("Error : %s\n", err);
+	free_scene(sc);
+	free_split(tokens);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	exit(1);
 }

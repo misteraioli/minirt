@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_args.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/08 11:14:57 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/08 17:45:50 by niperez          ###   ########.fr       */
+/*   Created: 2025/06/08 10:54:36 by niperez           #+#    #+#             */
+/*   Updated: 2025/06/23 17:12:37 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	check_args(int argc, char **argv)
+static int	check_args(int argc, char **argv)
 {
 	int	i;
 	int	fd;
@@ -28,5 +28,18 @@ int	check_args(int argc, char **argv)
 	if (fd < 0)
 		return (1);
 	close(fd);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_scene	sc;
+
+	if (check_args(argc, argv))
+		return (printf("wrong args : Please try enter <filename>.rt\n"), 1);
+	parse(&sc, argv);
+	init(&sc);
+	render(&sc);
+	mlx_loop(sc.mlx);
 	return (0);
 }

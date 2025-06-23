@@ -8,8 +8,8 @@ NAME	=	minirt
 # CC FLAG INC
 
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror -g
-INC		=	-Iinc #-Iminilibx-linux
+CFLAGS	=	-Wall -Wextra -Werror
+INC		=	-Iinc -Iminilibx-linux
 
 # DIR
 
@@ -26,11 +26,6 @@ LIBX		=	$(LIBX_PATH)/libmlx_Linux.a -lXext -lX11 -lm -lz
 LIBFT		=	$(LIBFT_PATH)/libft.a
 
 #
-
-LIB_PATH	=	libft
-LIB			=	$(LIB_PATH)/libft.a
-
-LIBS		=	-L libft -lft
 RM			=	rm -rf
 
 # HEADER
@@ -43,19 +38,30 @@ HEADER		=	$(addprefix $(INC_DIR), $(addsuffix .h, $(INC_FILES)))
 #######################################################
 ## SRCS & OBJS
 
-PARSE		=	parse \
-				parse_element \
+MAIN		=	main \
+				parse \
+				init \
+				render \
+
+PARSE		=	parse_element \
 				parse_object \
+				parse_vect \
+				parse_utils \
+
+RENDER		=	ray \
+				inter_sphere \
+				inter_plane \
+				inter_cylinder \
+				calcul_color \
 
 VECTOR		=	vector \
 				vector_operation \
 
-FILES		=	main \
-				check_args \
-				utils \
-				allocation \
+FILES		=	$(addprefix main/, $(MAIN)) \
 				$(addprefix parse/, $(PARSE)) \
+				$(addprefix render/, $(RENDER)) \
 				$(addprefix vector/, $(VECTOR)) \
+
 
 SRCS		=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJS		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
@@ -63,20 +69,22 @@ OBJS		=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 #######################################################
 ## RULES
 
-all : $(LIBFT) $(NAME)
-#$(LIBX)
-$(LIBX) :
-		@make --no-print-directory -C $(LIBX_PATH)
+all : $(LIBX) $(LIBFT) $(NAME)
 
 $(LIBFT) :
 		@make --no-print-directory -C $(LIBFT_PATH)
 
+$(LIBX) :
+		@make --no-print-directory -C $(LIBX_PATH)
+
 $(NAME) : $(OBJ_DIR) $(OBJS) Makefile
-		$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+		$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBX) $(LIBFT)
 
 $(OBJ_DIR):
 		@mkdir -p $(OBJ_DIR) \
+		$(OBJ_DIR)main/ \
 		$(OBJ_DIR)parse/ \
+		$(OBJ_DIR)render/ \
 		$(OBJ_DIR)vector/ \
 
 $(OBJ_DIR)%.o : $(SRC_DIR)%.c $(HEADER)
@@ -86,6 +94,7 @@ norm :
 		norminette $(LIBFT_PATH) inc/ $(SRC_DIR)
 
 clean :
+		@make --no-print-directory -C $(LIBX_PATH) clean
 		@make --no-print-directory -C $(LIBFT_PATH) fclean
 		$(RM) $(OBJ_DIR)
 

@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:47 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/08 20:11:42 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:24:50 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,18 @@
 # define PL 2
 # define CY 3
 
+# define WIDTH 1500
+# define HEIGHT 1000
+# define EPS 0.000001
+
 # include "../libft/inc/libft.h"
 # include "../libft/inc/get_next_line.h"
 # include "../libft/inc/ft_printf.h"
 # include "structs.h"
+
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include "../minilibx-linux/mlx.h"
 
 # include <fcntl.h>
 # include <unistd.h>
@@ -28,25 +36,30 @@
 # include <stdlib.h>
 # include <math.h>
 
-void		ft_err(char *err);
-int			check_args(int ac, char **av);
-t_scene		*alloc_scene(void);
-t_objs		*alloc_obj(t_scene *sc);
+// main
+void		parse(t_scene *sc, char **argv);
+void		init(t_scene *sc);
+void		render(t_scene *sc);
 
-//parse
-void		parse(t_scene *sc, int fd);
-t_vect		parse_vect(char *s);
-t_vect		parse_color(char *s);
+// parse
+t_vect		parse_vect(t_scene *sc, char **tokens, char *s, int fd);
+t_vect		parse_color(t_scene *sc, char **tokens, char *s, int fd);
 
-void		parse_camera(t_scene *sc, char **tokens);
-void		parse_ambient(t_scene *sc, char **tokens);
-void		parse_light(t_scene *sc, char **tokens);
+void		parse_camera(t_scene *sc, char **tokens, int fd);
+void		parse_ambient(t_scene *sc, char **tokens, int fd);
+void		parse_light(t_scene *sc, char **tokens, int fd);
 
-void		parse_sphere(t_scene *sc, char **tokens);
-void		parse_plane(t_scene *sc, char **tokens);
-void		parse_cylinder(t_scene *sc, char **tokens);
+void		parse_sphere(t_scene *sc, char **tokens, int fd);
+void		parse_plane(t_scene *sc, char **tokens, int fd);
+void		parse_cylinder(t_scene *sc, char **tokens, int fd);
 
-//vector
+// utils
+double		ft_atod(const char *str);
+void		free_split(char **s);
+void		free_scene(t_scene *sc);
+void		ft_err(t_scene *sc, char **tokens, int fd, char *err);
+
+// vector
 t_vect		set_vect(double x, double y, double z);
 double		get_norm(t_vect	v);
 t_vect		get_normalized(t_vect v);
@@ -57,8 +70,17 @@ t_vect		scal_mult(t_vect v, double a);
 double		prod_dot(t_vect u, t_vect v);
 t_vect		prod_cross(t_vect u, t_vect v);
 
-//utils
-void		free_split(char **s);
-double		ft_atod(const char *str);
+// ray
+void		set_ray_color(t_ray *ray, t_scene *sc);
+t_inter		find_inter(t_ray *ray, t_scene *sc);
+
+// inter
+t_inter		sphere_normal(t_inter hold, t_objs *obj, t_ray *ray);
+t_inter		plane_normal(t_inter hold, t_objs *obj, t_ray *ray);
+t_inter		cylinder_normal(t_inter hold, t_objs *obj, t_ray *ray);
+
+// calcul_color
+t_vect		calcul_color(t_scene *sc, t_inter inter, t_vect amb);
+t_vect		add_coef(t_vect col1, t_vect col2, double ratio);
 
 #endif
