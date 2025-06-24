@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 17:00:22 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/12 18:28:36 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/24 15:44:47 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	parse_plane(t_scene *sc, char **tokens, int fd)
 		ft_err(sc, tokens, fd, "invalid orientation plane");
 	if (obj->dir.x < -1 || obj->dir.y < -1 || obj->dir.z < -1)
 		ft_err(sc, tokens, fd, "invalid orientation plane");
+	obj->dir = get_normalized(obj->dir);
 	obj->color = parse_color(sc, tokens, tokens[3], fd);
 }
 
@@ -71,6 +72,7 @@ void	parse_cylinder(t_scene *sc, char **tokens, int fd)
 		ft_err(sc, tokens, fd, "invalid orientation cylinder");
 	if (obj->dir.x < -1 || obj->dir.y < -1 || obj->dir.z < -1)
 		ft_err(sc, tokens, fd, "invalid orientation cylinder");
+	obj->dir = get_normalized(obj->dir);
 	obj->diam = ft_atod(tokens[3]);
 	obj->height = ft_atod(tokens[4]);
 	if (obj->diam <= 0 || obj->height <= 0)
