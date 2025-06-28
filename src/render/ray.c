@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:13:09 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 14:02:36 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 20:03:21 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_inter	find_inter(t_ray *ray, t_obj *obj)
 void	set_ray_color(t_ray *ray, t_scene *sc)
 {
 	t_inter	inter;
-	t_vect	amb;
+	t_vect	new_amb;
 
 	inter = find_inter(ray, sc->objs);
 	if (inter.dist < 0)
@@ -42,8 +42,8 @@ void	set_ray_color(t_ray *ray, t_scene *sc)
 	{
 		if (prod_dot(ray->dir, inter.norm) > 0)
 			inter.norm = scal_mult(-1, inter.norm);
-		amb = scal_mult(sc->amb.ratio / 255,
-				vect_mult(inter.color, sc->amb.color));
-		ray->color = calcul_color(sc, inter, amb);
+		new_amb = scal_mult(sc->amb.ratio / 255,
+				vect_mult(sc->amb.color, inter.color));
+		ray->color = calcul_color(sc->light, sc->objs, inter, new_amb);
 	}
 }
