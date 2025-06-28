@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:58:41 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:13:23 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,17 @@ t_inter	cylinder_normal(t_inter hold, t_obj *obj, t_ray *ray)
 {
 	t_inter	inter;
 	double	m;
-	t_vect	oc;
 
 	inter.dist = inter_cylinder(ray, obj);
-	if (((hold.dist > inter.dist || hold.dist == -1) && inter.dist > EPS))
+	if (inter.dist > EPS && (hold.dist < 0 || inter.dist < hold.dist))
 	{
 		inter.color = obj->color;
 		inter.point = vect_add(ray->point, scal_mult(inter.dist, ray->dir));
-		oc = get_normalized(obj->dir);
-		m = prod_dot(ray->dir, scal_mult(inter.dist, oc))
-			+ prod_dot(vect_sub(ray->point, obj->point), oc);
+		m = prod_dot(ray->dir, scal_mult(inter.dist, obj->dir))
+			+ prod_dot(vect_sub(ray->point, obj->point), obj->dir);
 		inter.norm = get_normalized(vect_sub(vect_sub(inter.point, obj->point),
-					scal_mult(m, oc)));
-		hold = inter;
+					scal_mult(m, obj->dir)));
+		return (inter);
 	}
 	return (hold);
 }
