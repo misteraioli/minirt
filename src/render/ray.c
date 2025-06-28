@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:13:09 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:02:36 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_inter	find_inter(t_ray *ray, t_obj *obj)
 {
 	t_inter	inter;
 
-	inter.dist = -1.0;
+	inter.dist = -1;
 	while (obj)
 	{
 		if (obj->type == SP)
@@ -36,7 +36,9 @@ void	set_ray_color(t_ray *ray, t_scene *sc)
 	t_vect	amb;
 
 	inter = find_inter(ray, sc->objs);
-	if (inter.dist > EPS)
+	if (inter.dist < 0)
+		ray->color = scal_mult(sc->amb.ratio, sc->amb.color);
+	else
 	{
 		if (prod_dot(ray->dir, inter.norm) > 0)
 			inter.norm = scal_mult(-1, inter.norm);
@@ -44,6 +46,4 @@ void	set_ray_color(t_ray *ray, t_scene *sc)
 				vect_mult(inter.color, sc->amb.color));
 		ray->color = calcul_color(sc, inter, amb);
 	}
-	else
-		ray->color = scal_mult(sc->amb.ratio, sc->amb.color);
 }
