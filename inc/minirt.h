@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:47 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 18:18:05 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_inter		find_inter(t_ray *ray, t_obj *obj);
 t_inter		sphere_normal(t_inter hold, t_obj *obj, t_ray *ray);
 t_inter		plane_normal(t_inter hold, t_obj *obj, t_ray *ray);
 t_inter		cylinder_normal(t_inter hold, t_obj *obj, t_ray *ray);
+double		take_min_positif(double t1, double t2);
 
 // calcul_color
 t_vect		calcul_color(t_scene *sc, t_inter inter, t_vect amb);

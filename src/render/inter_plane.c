@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:59:13 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 14:01:36 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 15:39:08 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ t_inter	plane_normal(t_inter hold, t_obj *obj, t_ray *ray)
 		inter.color = obj->color;
 		inter.point = vect_add(ray->point, scal_mult(inter.dist, ray->dir));
 		inter.norm = obj->dir;
-		if (prod_dot(ray->dir, inter.norm) > 0)
-			inter.norm = scal_mult(-1, inter.norm);
 		return (inter);
 	}
 	return (hold);

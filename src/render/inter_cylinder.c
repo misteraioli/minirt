@@ -6,52 +6,50 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:58:41 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 14:13:23 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 18:25:37 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static double	pick_cy_inter(t_cylinder inf, t_ray *ray, t_obj *cy)
+static double	take_cyl_point(t_ray *ray, t_obj *obj, double t1, double t2)
 {
-	inf.t1 = (-inf.b + sqrt(inf.delta)) / (2 * inf.a);
-	inf.t2 = (-inf.b - sqrt(inf.delta)) / (2 * inf.a);
-	if (inf.t1 < EPS)
-		return (-1.0);
-	if (inf.t1 > inf.t2)
-		inf.t = inf.t2;
+	t_vect	oc;
+	double	y1;
+	double	y2;
+
+	oc = vect_sub(ray->point, obj->point);
+	y1 = prod_dot(ray->dir, obj->dir) * t1 + prod_dot(oc, obj->dir);
+	y2 = prod_dot(ray->dir, obj->dir) * t2 + prod_dot(oc, obj->dir);
+	if ((y1 >= EPS && y1 <= obj->height) && (y2 >= EPS && y2 <= obj->height))
+		return (take_min_positif(t1, t2));
+	if ((y1 >= EPS && y1 <= obj->height) && (y2 < EPS || y2 > obj->height))
+		return (take_min_positif(t1, -1));
+	if ((y1 < EPS || y1 > obj->height) && (y2 >= EPS && y2 <= obj->height))
+		return (take_min_positif(-1, t2));
 	else
-		inf.t = inf.t1;
-	inf.y0 = prod_dot(ray->dir, inf.normal) * inf.t2
-		+ prod_dot(inf.oc, inf.normal);
-	inf.y1 = prod_dot(ray->dir, inf.normal) * inf.t1
-		+ prod_dot(inf.oc, inf.normal);
-	if (inf.y0 >= EPS && inf.y0 <= cy->height)
-		return (inf.t2);
-	if (inf.y1 >= EPS && inf.y1 <= cy->height)
-		return (inf.t1);
-	return (-1.0);
+		return (-1);
 }
 
-static double	inter_cylinder(t_ray *r, t_obj *cy)
+static double	inter_cylinder(t_ray *ray, t_obj *obj)
 {
-	t_cylinder	inf;
-	double		t;
+	t_vect		oc;
+	t_equation	eq;
+	double		t1;
+	double		t2;
 
-	inf.normal = get_normalized(cy->dir);
-	inf.oc = vect_sub(r->point, cy->point);
-	inf.a = prod_dot(r->dir, r->dir) - (prod_dot(r->dir, inf.normal)
-			* prod_dot(r->dir, inf.normal));
-	inf.b = 2 * (prod_dot(r->dir, inf.oc) - (prod_dot(r->dir, inf.normal)
-				* prod_dot(inf.oc, inf.normal)));
-	inf.c = prod_dot(inf.oc, inf.oc)
-		- (prod_dot(inf.oc, inf.normal) * prod_dot(inf.oc, inf.normal))
-		- (cy->diam / 2) * (cy->diam / 2);
-	inf.delta = inf.b * inf.b - 4 * inf.a * inf.c;
-	if (inf.delta < EPS)
-		return (-1.0);
-	t = pick_cy_inter(inf, r, cy);
-	return (t);
+	oc = vect_sub(ray->point, obj->point);
+	eq.a = 1 - (prod_dot(ray->dir, obj->dir) * prod_dot(ray->dir, obj->dir));
+	eq.b = 2 * (prod_dot(ray->dir, oc)
+			- (prod_dot(ray->dir, obj->dir) * prod_dot(oc, obj->dir)));
+	eq.c = prod_dot(oc, oc) - (prod_dot(oc, obj->dir) * prod_dot(oc, obj->dir))
+		- (obj->diam * obj->diam / 4);
+	eq.delta = eq.b * eq.b - 4 * eq.a * eq.c;
+	if (eq.delta < EPS)
+		return (-1);
+	t1 = (-eq.b + sqrt(eq.delta)) / (2 * eq.a);
+	t2 = (-eq.b - sqrt(eq.delta)) / (2 * eq.a);
+	return (take_cyl_point(ray, obj, t1, t2));
 }
 
 t_inter	cylinder_normal(t_inter hold, t_obj *obj, t_ray *ray)

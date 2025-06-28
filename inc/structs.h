@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:53 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 18:19:54 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,17 +98,6 @@ typedef struct s_inter
 	t_vect	color;
 }	t_inter;
 
-typedef struct s_sphere
-{
-	double	a;
-	double	b;
-	double	c;
-	double	t;
-	double	t1;
-	double	t2;
-	t_vect	oc;
-}	t_sphere;
-
 typedef struct s_cylinder
 {
 	double	a;
@@ -123,5 +112,15 @@ typedef struct s_cylinder
 	t_vect	oc;
 	t_vect	normal;
 }	t_cylinder;
+
+typedef struct s_equation
+{
+	double	a;
+	double	b;
+	double	c;
+	double	delta;
+	double	t1;
+	double	t2;
+}	t_equation;
 
 #endif
