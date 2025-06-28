@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:53 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 18:19:54 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 18:31:25 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,6 @@ typedef struct s_equation
 	double	b;
 	double	c;
 	double	delta;
-	double	t1;
-	double	t2;
 }	t_equation;
 
 #endif
