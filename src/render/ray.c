@@ -6,30 +6,28 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:13:09 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 16:51:15 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_inter	find_inter(t_ray *ray, t_scene *sc)
+t_inter	find_inter(t_ray *ray, t_obj *obj)
 {
-	t_inter	hold;
-	t_objs	*obj;
+	t_inter	inter;
 
-	hold.t = -1.0;
-	obj = sc->objs;
+	inter.dist = -1.0;
 	while (obj)
 	{
 		if (obj->type == SP)
-			hold = sphere_normal(hold, obj, ray);
+			inter = sphere_normal(inter, obj, ray);
 		if (obj->type == PL)
-			hold = plane_normal(hold, obj, ray);
+			inter = plane_normal(inter, obj, ray);
 		if (obj->type == CY)
-			hold = cylinder_normal(hold, obj, ray);
+			inter = cylinder_normal(inter, obj, ray);
 		obj = obj->next;
 	}
-	return (hold);
+	return (inter);
 }
 
 void	set_ray_color(t_ray *ray, t_scene *sc)
@@ -37,14 +35,15 @@ void	set_ray_color(t_ray *ray, t_scene *sc)
 	t_inter	inter;
 	t_vect	amb;
 
-	inter = find_inter(ray, sc);
-	if (inter.t > EPS)
+	inter = find_inter(ray, sc->objs);
+	if (inter.dist > EPS)
 	{
-		amb = add_coef(inter.color, sc->amb.color, sc->amb.ratio);
 		if (prod_dot(ray->dir, inter.norm) > 0)
-			inter.norm = scal_mult(inter.norm, -1);
+			inter.norm = scal_mult(-1, inter.norm);
+		amb = scal_mult(sc->amb.ratio / 255,
+				vect_mult(inter.color, sc->amb.color));
 		ray->color = calcul_color(sc, inter, amb);
 	}
 	else
-		ray->color = scal_mult(sc->amb.color, sc->amb.ratio);
+		ray->color = scal_mult(sc->amb.ratio, sc->amb.color);
 }

@@ -6,21 +6,11 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:14:42 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 16:52:15 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:42:18 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-t_vect	add_coef(t_vect col1, t_vect col2, double ratio)
-{
-	t_vect	ret;
-
-	ret.x = col1.x * col2.x;
-	ret.y = col1.y * col2.y;
-	ret.z = col1.z * col2.z;
-	return (scal_mult(ret, ratio / 255));
-}
 
 static int	shade(t_scene *sc, t_inter inter, t_light *light)
 {
@@ -29,12 +19,12 @@ static int	shade(t_scene *sc, t_inter inter, t_light *light)
 	t_inter		shadow;
 	t_vect		hit_sh;
 
-	hit_light = vect_sub(light->point, inter.hit);
-	sh_ray.point = inter.hit;
+	hit_light = vect_sub(light->point, inter.point);
+	sh_ray.point = inter.point;
 	sh_ray.dir = get_normalized(hit_light);
-	shadow = find_inter(&sh_ray, sc);
-	hit_sh = vect_sub(shadow.hit, sh_ray.point);
-	if (shadow.t > EPS && (get_norm(hit_light) > get_norm(hit_sh)))
+	shadow = find_inter(&sh_ray, sc->objs);
+	hit_sh = vect_sub(shadow.point, sh_ray.point);
+	if (shadow.dist > EPS && (get_norm(hit_light) > get_norm(hit_sh)))
 		return (1);
 	return (0);
 }
@@ -68,12 +58,13 @@ t_vect	calcul_color(t_scene *sc, t_inter inter, t_vect amb)
 		ret = add_color(ret, amb);
 	else
 	{
-		hit_light = vect_sub(light.point, inter.hit);
+		hit_light = vect_sub(light.point, inter.point);
 		d = prod_dot(get_normalized(hit_light), inter.norm);
 		ret = add_color(ret, amb);
 		if (d > 0)
 			ret = add_color(ret,
-					add_coef(inter.color, light.color, d * light.ratio));
+					scal_mult(d * light.ratio / 255,
+						vect_mult(inter.color, light.color)));
 	}
 	return (ret);
 }

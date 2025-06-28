@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:41:47 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 17:12:42 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	free_split(char **s)
 
 void	free_scene(t_scene *sc)
 {
-	t_objs	*tmp;
+	t_obj	*tmp;
 
 	while (sc->objs)
 	{

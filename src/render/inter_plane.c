@@ -6,13 +6,13 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:59:13 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/24 15:57:18 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 13:16:25 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static double	inter_plane(t_ray *ray, t_objs *obj)
+static double	inter_plane(t_ray *ray, t_obj *obj)
 {
 	t_vect	x;
 	double	t;
@@ -32,18 +32,18 @@ static double	inter_plane(t_ray *ray, t_objs *obj)
 	return (-1.0);
 }
 
-t_inter	plane_normal(t_inter hold, t_objs *obj, t_ray *ray)
+t_inter	plane_normal(t_inter hold, t_obj *obj, t_ray *ray)
 {
 	t_inter	inter;
 
-	inter.t = inter_plane(ray, obj);
-	if (inter.t > 0 && (hold.t > inter.t || hold.t < 0))
+	inter.dist = inter_plane(ray, obj);
+	if (((hold.dist > inter.dist || hold.dist == -1) && inter.dist > EPS))
 	{
 		inter.color = obj->color;
-		inter.hit = vect_add(ray->point, scal_mult(ray->dir, inter.t));
+		inter.point = vect_add(ray->point, scal_mult(inter.dist, ray->dir));
 		inter.norm = obj->dir;
 		if (prod_dot(ray->dir, inter.norm) > 0)
-			inter.norm = scal_mult(obj->dir, -1);
+			inter.norm = scal_mult(-1, obj->dir);
 		hold = inter;
 	}
 	return (hold);

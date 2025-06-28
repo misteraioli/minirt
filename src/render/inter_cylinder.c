@@ -6,13 +6,13 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:58:41 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 16:30:06 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static double	pick_cy_inter(t_cylinder inf, t_ray *ray, t_objs *cy)
+static double	pick_cy_inter(t_cylinder inf, t_ray *ray, t_obj *cy)
 {
 	inf.t1 = (-inf.b + sqrt(inf.delta)) / (2 * inf.a);
 	inf.t2 = (-inf.b - sqrt(inf.delta)) / (2 * inf.a);
@@ -33,7 +33,7 @@ static double	pick_cy_inter(t_cylinder inf, t_ray *ray, t_objs *cy)
 	return (-1.0);
 }
 
-static double	inter_cylinder(t_ray *r, t_objs *cy)
+static double	inter_cylinder(t_ray *r, t_obj *cy)
 {
 	t_cylinder	inf;
 	double		t;
@@ -54,22 +54,22 @@ static double	inter_cylinder(t_ray *r, t_objs *cy)
 	return (t);
 }
 
-t_inter	cylinder_normal(t_inter hold, t_objs *obj, t_ray *ray)
+t_inter	cylinder_normal(t_inter hold, t_obj *obj, t_ray *ray)
 {
 	t_inter	inter;
 	double	m;
 	t_vect	oc;
 
-	inter.t = inter_cylinder(ray, obj);
-	if (((hold.t > inter.t || hold.t == -1) && inter.t > EPS))
+	inter.dist = inter_cylinder(ray, obj);
+	if (((hold.dist > inter.dist || hold.dist == -1) && inter.dist > EPS))
 	{
 		inter.color = obj->color;
-		inter.hit = vect_add(ray->point, scal_mult(ray->dir, inter.t));
+		inter.point = vect_add(ray->point, scal_mult(inter.dist, ray->dir));
 		oc = get_normalized(obj->dir);
-		m = prod_dot(ray->dir, scal_mult(oc, inter.t))
+		m = prod_dot(ray->dir, scal_mult(inter.dist, oc))
 			+ prod_dot(vect_sub(ray->point, obj->point), oc);
-		inter.norm = get_normalized(vect_sub(vect_sub(inter.hit, obj->point),
-					scal_mult(oc, m)));
+		inter.norm = get_normalized(vect_sub(vect_sub(inter.point, obj->point),
+					scal_mult(m, oc)));
 		hold = inter;
 	}
 	return (hold);

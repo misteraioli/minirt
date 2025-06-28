@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:53 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 17:26:03 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_light
 	int		count;
 }	t_light;
 
-typedef struct s_objs
+typedef struct s_obj
 {
 	int				type;
 	t_vect			point;
@@ -59,8 +59,8 @@ typedef struct s_objs
 	double			height;
 	t_vect			color;
 	t_vect			norm;
-	struct s_objs	*next;
-}	t_objs;
+	struct s_obj	*next;
+}	t_obj;
 
 typedef struct s_img
 {
@@ -76,7 +76,7 @@ typedef struct s_scene
 	t_cam	cam;
 	t_amb	amb;
 	t_light	light;
-	t_objs	*objs;
+	t_obj	*objs;
 
 	void	*mlx;
 	void	*mlx_window;
@@ -92,10 +92,10 @@ typedef struct s_ray
 
 typedef struct s_inter
 {
-	double	t;
-	t_vect	color;
-	t_vect	hit;
+	double	dist;
+	t_vect	point;
 	t_vect	norm;
+	t_vect	color;
 }	t_inter;
 
 typedef struct s_sphere

@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:47 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 17:24:50 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,28 @@ void		ft_err(t_scene *sc, char **tokens, int fd, char *err);
 
 // vector
 t_vect		set_vect(double x, double y, double z);
+
 double		get_norm(t_vect	v);
 t_vect		get_normalized(t_vect v);
 
-t_vect		vect_sub(t_vect u, t_vect v);
-t_vect		vect_add(t_vect u, t_vect v);
-t_vect		scal_mult(t_vect v, double a);
 double		prod_dot(t_vect u, t_vect v);
 t_vect		prod_cross(t_vect u, t_vect v);
 
+t_vect		scal_mult(double a, t_vect v);
+t_vect		vect_add(t_vect u, t_vect v);
+t_vect		vect_sub(t_vect u, t_vect v);
+t_vect		vect_mult(t_vect u, t_vect v);
+
 // ray
 void		set_ray_color(t_ray *ray, t_scene *sc);
-t_inter		find_inter(t_ray *ray, t_scene *sc);
+t_inter		find_inter(t_ray *ray, t_obj *obj);
 
 // inter
-t_inter		sphere_normal(t_inter hold, t_objs *obj, t_ray *ray);
-t_inter		plane_normal(t_inter hold, t_objs *obj, t_ray *ray);
-t_inter		cylinder_normal(t_inter hold, t_objs *obj, t_ray *ray);
+t_inter		sphere_normal(t_inter hold, t_obj *obj, t_ray *ray);
+t_inter		plane_normal(t_inter hold, t_obj *obj, t_ray *ray);
+t_inter		cylinder_normal(t_inter hold, t_obj *obj, t_ray *ray);
 
 // calcul_color
 t_vect		calcul_color(t_scene *sc, t_inter inter, t_vect amb);
-t_vect		add_coef(t_vect col1, t_vect col2, double ratio);
 
 #endif

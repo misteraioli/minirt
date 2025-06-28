@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:01:57 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 16:30:00 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:47:34 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static double	take_min(double x, double y)
 	return (x);
 }
 
-static double	inter_sphere(t_ray *ray, t_objs *sp)
+static double	inter_sphere(t_ray *ray, t_obj *sp)
 {
 	t_sphere	sph;
 
@@ -43,16 +43,16 @@ static double	inter_sphere(t_ray *ray, t_objs *sp)
 	return (sph.t2);
 }
 
-t_inter	sphere_normal(t_inter hold, t_objs *obj, t_ray *ray)
+t_inter	sphere_normal(t_inter hold, t_obj *obj, t_ray *ray)
 {
 	t_inter	inter;
 
-	inter.t = inter_sphere(ray, obj);
-	if (((hold.t > inter.t || hold.t == -1) && inter.t > EPS))
+	inter.dist = inter_sphere(ray, obj);
+	if (((hold.dist > inter.dist || hold.dist == -1) && inter.dist > EPS))
 	{
 		inter.color = obj->color;
-		inter.hit = vect_add(ray->point, scal_mult(ray->dir, inter.t));
-		inter.norm = get_normalized(vect_sub(inter.hit, obj->point));
+		inter.point = vect_add(ray->point, scal_mult(inter.dist, ray->dir));
+		inter.norm = get_normalized(vect_sub(inter.point, obj->point));
 		hold = inter;
 	}
 	return (hold);

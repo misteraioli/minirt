@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:14:30 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 16:12:34 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:09:20 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static void	init_ray(t_ray *ray, t_cam cam, double x, double y)
 	v = 1.0 - (2.0 * y / (HEIGHT - 1.0));
 	ray->dir = get_normalized(
 			vect_add(cam.dir,
-				vect_add(scal_mult(cam.right, u * cam.width),
-					scal_mult(cam.up, v * cam.height))));
+				vect_add(scal_mult(u * cam.width, cam.right),
+					scal_mult(v * cam.height, cam.up))));
 }
 
 static int	create_rgb(t_vect color)
