@@ -6,13 +6,13 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:01:57 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 18:26:34 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/29 12:27:23 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double	take_min_positif(double t1, double t2)
+double	take_min_pos(double t1, double t2)
 {
 	if (t1 < EPS && t2 < EPS)
 		return (-1);
@@ -42,7 +42,7 @@ static double	inter_sphere(t_ray *ray, t_obj *obj)
 		return (-1);
 	t1 = (-eq.b - sqrt(eq.delta)) / (2 * eq.a);
 	t2 = (-eq.b + sqrt(eq.delta)) / (2 * eq.a);
-	return (take_min_positif(t1, t2));
+	return (take_min_pos(t1, t2));
 }
 
 t_inter	sphere_normal(t_inter hold, t_obj *obj, t_ray *ray)

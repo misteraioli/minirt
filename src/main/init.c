@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:27:53 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/23 17:17:33 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/29 12:25:16 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void	init(t_scene *sc)
 		free_scene(sc);
 		exit(1);
 	}
-	mlx_hook(sc->mlx_window, KeyPress, KeyPressMask,
-		key_handler, sc);
 	mlx_hook(sc->mlx_window, DestroyNotify, StructureNotifyMask,
 		close_handler, sc);
+	mlx_hook(sc->mlx_window, KeyPress, KeyPressMask,
+		key_handler, sc);
 }

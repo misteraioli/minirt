@@ -6,11 +6,27 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 13:41:56 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/13 13:42:25 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/29 12:39:53 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_vect	parse_vect(t_scene *sc, char **tokens, char *s, int fd)
+{
+	char	**params;
+	t_vect	cord;
+
+	params = ft_split(s, ',');
+	if (!params || !params[1] || !params[2] || params[3])
+	{
+		free_split(params);
+		ft_err(sc, tokens, fd, "invalid coordinates");
+	}
+	cord = set_vect(ft_atod(params[0]), ft_atod(params[1]), ft_atod(params[2]));
+	free_split(params);
+	return (cord);
+}
 
 t_vect	parse_color(t_scene *sc, char **tokens, char *s, int fd)
 {
@@ -34,22 +50,6 @@ t_vect	parse_color(t_scene *sc, char **tokens, char *s, int fd)
 		free_split(params);
 		ft_err(sc, tokens, fd, "invalid color");
 	}
-	free_split(params);
-	return (cord);
-}
-
-t_vect	parse_vect(t_scene *sc, char **tokens, char *s, int fd)
-{
-	char	**params;
-	t_vect	cord;
-
-	params = ft_split(s, ',');
-	if (!params || !params[1] || !params[2] || params[3])
-	{
-		free_split(params);
-		ft_err(sc, tokens, fd, "invalid coordinates");
-	}
-	cord = set_vect(ft_atod(params[0]), ft_atod(params[1]), ft_atod(params[2]));
 	free_split(params);
 	return (cord);
 }

@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:58:41 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 18:25:37 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/29 12:27:23 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static double	take_cyl_point(t_ray *ray, t_obj *obj, double t1, double t2)
 	y1 = prod_dot(ray->dir, obj->dir) * t1 + prod_dot(oc, obj->dir);
 	y2 = prod_dot(ray->dir, obj->dir) * t2 + prod_dot(oc, obj->dir);
 	if ((y1 >= EPS && y1 <= obj->height) && (y2 >= EPS && y2 <= obj->height))
-		return (take_min_positif(t1, t2));
+		return (take_min_pos(t1, t2));
 	if ((y1 >= EPS && y1 <= obj->height) && (y2 < EPS || y2 > obj->height))
-		return (take_min_positif(t1, -1));
+		return (take_min_pos(t1, -1));
 	if ((y1 < EPS || y1 > obj->height) && (y2 >= EPS && y2 <= obj->height))
-		return (take_min_positif(-1, t2));
+		return (take_min_pos(-1, t2));
 	else
 		return (-1);
 }

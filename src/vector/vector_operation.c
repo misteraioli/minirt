@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 16:08:27 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 12:14:04 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/29 12:13:07 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,20 @@ t_vect	scal_mult(double a, t_vect v)
 	v.x *= a;
 	v.y *= a;
 	v.z *= a;
+	return (v);
+}
+
+t_vect	vect_clamp(t_vect v, double min, double max)
+{
+	if (v.x > max)
+		v.x = max;
+	if (v.y < min)
+		v.y = min;
+	else if (v.y > max)
+		v.y = max;
+	if (v.z < min)
+		v.z = min;
+	else if (v.z > max)
+		v.z = max;
 	return (v);
 }

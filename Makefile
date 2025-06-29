@@ -52,7 +52,6 @@ RENDER		=	ray \
 				inter_sphere \
 				inter_plane \
 				inter_cylinder \
-				calcul_color \
 
 VECTOR		=	vector \
 				vector_operation \

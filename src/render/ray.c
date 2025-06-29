@@ -6,13 +6,13 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:13:09 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 20:03:21 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/29 12:15:44 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_inter	find_inter(t_ray *ray, t_obj *obj)
+static t_inter	find_inter(t_ray *ray, t_obj *obj)
 {
 	t_inter	inter;
 
@@ -30,20 +30,49 @@ t_inter	find_inter(t_ray *ray, t_obj *obj)
 	return (inter);
 }
 
+static int	shade(t_obj *objs, t_inter inter, t_light light)
+{
+	t_ray	ray;
+	t_vect	inter_to_light;
+	t_inter	obstacle;
+
+	ray.point = inter.point;
+	inter_to_light = vect_sub(light.point, inter.point);
+	ray.dir = get_normalized(inter_to_light);
+	obstacle = find_inter(&ray, objs);
+	return (obstacle.dist > EPS
+		&& obstacle.dist < sqrt(get_norm(inter_to_light)));
+}
+
+static t_vect	colorize(t_light light, t_obj *objs, t_inter inter, t_vect amb)
+{
+	double	cos;
+
+	if (!light.count || shade(objs, inter, light))
+		return (amb);
+	cos = prod_dot(get_normalized(vect_sub(light.point, inter.point)),
+			inter.norm);
+	if (cos > 0)
+		amb = vect_add(amb,
+				scal_mult(cos * light.ratio / 255,
+					vect_mult(inter.color, light.color)));
+	return (vect_clamp(amb, 0, 255));
+}
+
 void	set_ray_color(t_ray *ray, t_scene *sc)
 {
 	t_inter	inter;
-	t_vect	new_amb;
+	t_vect	ambiant;
 
 	inter = find_inter(ray, sc->objs);
 	if (inter.dist < 0)
-		ray->color = scal_mult(sc->amb.ratio, sc->amb.color);
+		ray->color = set_vect(0, 0, 0);
 	else
 	{
 		if (prod_dot(ray->dir, inter.norm) > 0)
 			inter.norm = scal_mult(-1, inter.norm);
-		new_amb = scal_mult(sc->amb.ratio / 255,
+		ambiant = scal_mult(sc->amb.ratio / 255,
 				vect_mult(sc->amb.color, inter.color));
-		ray->color = calcul_color(sc->light, sc->objs, inter, new_amb);
+		ray->color = colorize(sc->light, sc->objs, inter, ambiant);
 	}
 }
