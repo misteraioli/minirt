@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 17:00:22 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/28 13:09:48 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/30 13:27:11 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,6 @@ static t_obj	*alloc_obj(t_scene *sc)
 	return (new_obj);
 }
 
-void	parse_sphere(t_scene *sc, char **tokens, int fd)
-{
-	t_obj	*obj;
-
-	if (!tokens || !tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
-		ft_err(sc, tokens, fd, "invalid sphere");
-	obj = alloc_obj(sc);
-	obj->type = SP;
-	obj->point = parse_vect(sc, tokens, tokens[1], fd);
-	obj->diam = ft_atod(tokens[2]);
-	if (obj->diam <= 0)
-		ft_err(sc, tokens, fd, "invalid diameter sphere");
-	obj->color = parse_color(sc, tokens, tokens[3], fd);
-}
-
 void	parse_plane(t_scene *sc, char **tokens, int fd)
 {
 	t_obj	*obj;
@@ -54,6 +39,21 @@ void	parse_plane(t_scene *sc, char **tokens, int fd)
 	if (obj->dir.x == 0 && obj->dir.y == 0 && obj->dir.z == 0)
 		ft_err(sc, tokens, fd, "invalid orientation plane");
 	obj->dir = get_normalized(obj->dir);
+	obj->color = parse_color(sc, tokens, tokens[3], fd);
+}
+
+void	parse_sphere(t_scene *sc, char **tokens, int fd)
+{
+	t_obj	*obj;
+
+	if (!tokens || !tokens[1] || !tokens[2] || !tokens[3] || tokens[4])
+		ft_err(sc, tokens, fd, "invalid sphere");
+	obj = alloc_obj(sc);
+	obj->type = SP;
+	obj->point = parse_vect(sc, tokens, tokens[1], fd);
+	obj->diam = ft_atod(tokens[2]);
+	if (obj->diam <= 0)
+		ft_err(sc, tokens, fd, "invalid diameter sphere");
 	obj->color = parse_color(sc, tokens, tokens[3], fd);
 }
 

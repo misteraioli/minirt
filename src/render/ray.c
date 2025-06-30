@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:13:09 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/30 13:08:37 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/30 13:28:26 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static t_inter	find_inter(t_ray *ray, t_obj *obj)
 	inter.dist = -1;
 	while (obj)
 	{
-		if (obj->type == SP)
-			inter = sphere_normal(inter, obj, ray);
 		if (obj->type == PL)
 			inter = plane_normal(inter, obj, ray);
+		if (obj->type == SP)
+			inter = sphere_normal(inter, obj, ray);
 		if (obj->type == CY)
 			inter = cylinder_normal(inter, obj, ray);
 		obj = obj->next;
