@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 21:13:09 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/29 12:15:44 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/30 13:08:37 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ static int	shade(t_obj *objs, t_inter inter, t_light light)
 	inter_to_light = vect_sub(light.point, inter.point);
 	ray.dir = get_normalized(inter_to_light);
 	obstacle = find_inter(&ray, objs);
-	return (obstacle.dist > EPS
-		&& obstacle.dist < sqrt(get_norm(inter_to_light)));
+	return (obstacle.dist > EPS && obstacle.dist < get_norm(inter_to_light));
 }
 
 static t_vect	colorize(t_light light, t_obj *objs, t_inter inter, t_vect amb)

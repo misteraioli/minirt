@@ -6,19 +6,21 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:47 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/29 12:40:34 by niperez          ###   ########.fr       */
+/*   Updated: 2025/06/30 13:13:15 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
+# define _GNU_SOURCE
+
 # define PL 1
 # define SP 2
 # define CY 3
 
-# define WIDTH 1500
-# define HEIGHT 1000
+# define WIDTH 1600
+# define HEIGHT 800
 # define EPS 0.000001
 
 # include "../libft/inc/libft.h"
@@ -49,8 +51,8 @@ void		parse_ambient(t_scene *sc, char **tokens, int fd);
 void		parse_camera(t_scene *sc, char **tokens, int fd);
 void		parse_light(t_scene *sc, char **tokens, int fd);
 
-void		parse_sphere(t_scene *sc, char **tokens, int fd);
 void		parse_plane(t_scene *sc, char **tokens, int fd);
+void		parse_sphere(t_scene *sc, char **tokens, int fd);
 void		parse_cylinder(t_scene *sc, char **tokens, int fd);
 
 double		ft_atod(const char *str);
