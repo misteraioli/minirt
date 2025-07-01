@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 20:27:53 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/30 13:11:19 by niperez          ###   ########.fr       */
+/*   Updated: 2025/07/01 17:29:33 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	init_camera(t_cam *cam)
 	theta = cam->fov * M_PI / 180.0;
 	cam->height = tan(theta / 2);
 	cam->width = cam->height * screen_ratio;
-	cam->dir = get_normalized(cam->dir);
 	if (fabs(prod_dot(cam->dir, set_vect(0.0, 0.0, 1.0))) > 1 - EPS)
 	{
 		if (cam->dir.z > 0)
