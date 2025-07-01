@@ -6,7 +6,7 @@
 /*   By: niperez <niperez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 10:55:47 by niperez           #+#    #+#             */
-/*   Updated: 2025/06/30 13:13:15 by niperez          ###   ########.fr       */
+/*   Updated: 2025/07/01 18:11:18 by niperez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define CY 3
 
 # define WIDTH 1600
-# define HEIGHT 800
+# define HEIGHT 900
 # define EPS 0.000001
 
 # include "../libft/inc/libft.h"
